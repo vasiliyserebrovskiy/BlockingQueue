@@ -20,17 +20,12 @@ public class BlkQueueImpl<T> implements BlkQueue<T> {
         this.messages = new LinkedList<>();
     }
 
-
-    //Usages if messages.size < capacity
-
-    // .add(element);    добавляет в конец (по умолчанию)
-    // .removeFirst();  Удаляет и возвращает первый элемент
     @Override
-    public void push(T message) { // post in messageBox
+    public void push(T message) {
        mutex.lock();
        try {
            // if we did not have free space in messages list we need to wait
-           while(this.messages.size() == capacity) {
+           while(messages.size() == capacity) {
                try {
                    pushWaitCondition.await();
                } catch (InterruptedException e) {
@@ -45,7 +40,7 @@ public class BlkQueueImpl<T> implements BlkQueue<T> {
     }
 
     @Override
-    public T pop() { // get in messageBox
+    public T pop() {
         mutex.lock();
         try {
             // if we did not have any message in messages list we need to wait
