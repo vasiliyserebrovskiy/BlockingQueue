@@ -25,7 +25,7 @@ public class BlkQueueImpl<T> implements BlkQueue<T> {
        mutex.lock();
        try {
            // if we did not have free space in messages list we need to wait
-           while(messages.size() == capacity) {
+           while(messages.size() >= capacity) {
                try {
                    pushWaitCondition.await();
                } catch (InterruptedException e) {
